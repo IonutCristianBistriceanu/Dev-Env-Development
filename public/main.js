@@ -26,11 +26,30 @@ $('#register-user-form').submit((e) => {
             }
         }
     });
-
 });
 
 
+$('#login-form').submit((e) => {
+
+    e.preventDefault();
+    var data = ConvertFormToJSON($("#login-form"));
+    var url = "http://localhost:3000";
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function (data, textStatus, request) {
+            window.location.replace(url + '/me');
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+})
 
 
 
-//----------------------AJAX Api end-----------------------------------//
+
+
+//----------------------AJAX Api calls end-----------------------------------//

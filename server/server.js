@@ -8,6 +8,7 @@ const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
 const {authenticate} = require('./middleware/authenticate');
+const cookieParser = require('cookie-parser')
 
 var app = express();
 
@@ -19,6 +20,7 @@ app.use(express.static(__dirname + './../public'));
 
 
 app.use(bodyParser.json());
+app.use(cookieParser())
 
 app.listen(3000, ()=>{
     console.log('Started on port 3000');
@@ -64,6 +66,13 @@ app.get('/register', (req, res) => {
         pageTitle: 'Register page'
     });
 });
+
+app.get('/me', authenticate, (req, res)=>{
+   res.render('me.hbs', {
+       pageTitle:'me'
+   })
+});
+
 //----------------------Routes end-----------------------------------//
 
 
@@ -71,6 +80,20 @@ app.get('/register', (req, res) => {
 
 
 //----------------------API's-----------------------------------//
+
+//POST '/' Login
+app.post('/', (req, res)=>{
+    var body = _.pick(req.body, ['email','password']);
+
+    User.findByCredentials(body.email, body.password).then((user)=>{
+        return user.generateAuthToken().then((token)=>{
+            res.cookie('xauth', token);
+            res.header('x-auth', token).send(user);
+        });
+    }).catch((e)=>{
+        res.status(400).send();
+    });
+});
 
 //POST /register
 app.post('/register', (req, res)=>{
@@ -85,29 +108,6 @@ app.post('/register', (req, res)=>{
         res.status(400).send(e);
     })
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //Get me
@@ -198,22 +198,6 @@ app.patch('/todos/:id', (req, res)=>{
 
 
 
-//Login
-
-//POST /users/login {email,password}
-
-app.post('/users/login', (req, res)=>{
-    var body = _.pick(req.body, ['email','password']);
-
-    User.findByCredentials(body.email, body.password).then((user)=>{
-        return user.generateAuthToken().then((token)=>{
-            res.header('x-auth', token).send(user);
-        });
-    }).catch((e)=>{
-        res.status(400).send();
-    });
-
-});
 
 
 app.delete('/users/me/token', authenticate, (req, res)=>{
