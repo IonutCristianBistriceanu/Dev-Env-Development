@@ -1,6 +1,7 @@
 const _=require('lodash');
 const  express = require('express');
 const bodyParser = require('body-parser');
+const hbs = require('hbs');
 
 const {ObjectID} = require('mongodb');
 const {mongoose} = require('./db/mongoose');
@@ -8,11 +9,112 @@ const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
 const {authenticate} = require('./middleware/authenticate');
 
-
-
 var app = express();
 
+//----------------------Configuration-----------------------------------//
+hbs.registerPartials(__dirname + './../views/partials');
+app.set('view engine', 'hbs');
+app.use(express.static(__dirname + './../public'));
+
+
+
 app.use(bodyParser.json());
+
+app.listen(3000, ()=>{
+    console.log('Started on port 3000');
+});
+//----------------------Configuration end-----------------------------------//
+
+
+
+
+
+
+//----------------------Helpers-----------------------------------//
+hbs.registerHelper('getCurrentYear', () => {
+    return new Date().getFullYear();
+});
+
+hbs.registerHelper('screamIt', (text)=>{
+    return text.toUpperCase();
+});
+
+hbs.registerHelper('if_eq', function(a, b, opts) {
+    if (a == b) {
+        return opts.fn(this);
+    } else {
+        return opts.inverse(this);
+    }
+});
+//----------------------Helpers end-----------------------------------//
+
+
+
+
+
+//----------------------Routes-----------------------------------//
+app.get('/', (req, res) => {
+    res.render('login.hbs', {
+        pageTitle: 'Login page'
+    })
+});
+
+app.get('/register', (req, res) => {
+    res.render('register.hbs', {
+        pageTitle: 'Register page'
+    });
+});
+//----------------------Routes end-----------------------------------//
+
+
+
+
+
+//----------------------API's-----------------------------------//
+
+//POST /register
+app.post('/register', (req, res)=>{
+    var body = _.pick(req.body, ['email','password']);
+    var user = new User(body);
+
+    user.save().then(()=>{
+        return user.generateAuthToken();
+    }).then((token)=>{
+        res.header('x-auth', token).send(user);
+    }).catch((e)=>{
+        res.status(400).send(e);
+    })
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Get me
+app.get('/users/me', authenticate , (req, res)=>{
+    res.send(req.user);
+});
+
 
 app.post('/todos', (req, res)=>{
     var todo = new Todo({
@@ -25,10 +127,6 @@ app.post('/todos', (req, res)=>{
         res.status(400).send(e);
     })
 })
-
-app.listen(3000, ()=>{
-    console.log('Started on port 3000');
-});
 
 app.get('/todos',(req, res) => {
     Todo.find().then((todos)=>{
@@ -96,25 +194,7 @@ app.patch('/todos/:id', (req, res)=>{
 
 
 
-//POST /users
-app.post('/users', (req, res)=>{
-    var body = _.pick(req.body, ['email','password']);
-    var user = new User(body);
 
-    user.save().then(()=>{
-        return user.generateAuthToken();
-    }).then((token)=>{
-        res.header('x-auth', token).send(user);
-    }).catch((e)=>{
-        res.status(400).send(e);
-    })
-});
-
-
-//Get me
-app.get('/users/me', authenticate , (req, res)=>{
-    res.send(req.user);
-});
 
 
 
@@ -143,5 +223,9 @@ app.delete('/users/me/token', authenticate, (req, res)=>{
         res.status(400).send();
     });
 });
+//----------------------API's end-----------------------------------//
+
+
+
 
 module.exports= {app};
