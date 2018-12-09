@@ -8,6 +8,8 @@ const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
 const {authenticate} = require('./middleware/authenticate');
 
+
+
 var app = express();
 
 app.use(bodyParser.json());
