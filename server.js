@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const hbs = require('hbs');
 
 const {ObjectID} = require('mongodb');
-const {mongoose} = require('./db/mongoose');
-const {Todo} = require('./models/todo');
-const {User} = require('./models/user');
-const {House} = require('./models/house');
-const {authenticate} = require('./middleware/authenticate');
+const {mongoose} = require('./server/db/mongoose');
+const {Todo} = require('./server/models/todo');
+const {User} = require('./server/models/user');
+const {House} = require('./server/models/house');
+const {authenticate} = require('./server/middleware/authenticate');
 const cookieParser = require('cookie-parser')
 const upload = require('express-fileupload');
 
@@ -17,9 +17,9 @@ var app = express();
 //----------------------Configuration-----------------------------------//
 app.set('view engine', 'hbs');
 
-hbs.registerPartials(__dirname + './../views/partials/');
+hbs.registerPartials(__dirname + '/views/partials/');
 
-app.use(express.static(__dirname + './../public'));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(upload());
