@@ -19,8 +19,6 @@ hbs.registerPartials(__dirname + './../views/partials');
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + './../public'));
 
-
-
 app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(upload());
@@ -145,31 +143,42 @@ app.delete('/main/logout', authenticate, (req, res)=>{
 
 app.post('/add', (req, res)=>{
 
+    var imageName="";
+    var imageLocation="";
+    
     if(req.files){
         var file = req.files.file;
-        var filename = file.name;
+        
+        imageName = file.name;
+        imageLocation ='./public/uploads/';
 
-        file.mv(__dirname+'/uploads/' + filename, (err)=>{
+        file.mv(imageLocation + imageName, (err)=>{
             if(err){
-                console.log(err);
-                res.redirect('/main');
             }
-            console.log('done');
-            res.redirect('/main');
         })
     }
 
-    return;
     var house = new House({
         location:req.body.location,
-        description:req.body.description
+        description:req.body.description,
+        imageName,
+        imageLocation
     });
 
     house.save().then((doc)=>{
-        res.send(doc);
+        res.redirect('/main');
     }, (e)=>{
         res.status(400).send(e);
     })
+
+
+
+
+
+    
+    
+
+    
 })
 
 

@@ -9,7 +9,7 @@ var House = mongoose.model('House', {
     },
     description: {
         type: String,
-        required:true,
+        required: true,
         minlength: 20,
         trim: true
     },
@@ -17,18 +17,16 @@ var House = mongoose.model('House', {
         type: Number,
         default: new Date().getTime()
     },
-    images: [{
-        ImageName: {
-            type: String,
-            required: false,
-            trim: true
-        },
-        imageLocation: {
-            type: String,
-            required: false,
-            trim: true
-        }
-    }]
+    imageName: {
+        type: String,
+        required: false,
+        trim: true
+    },
+    imageLocation: {
+        type: String,
+        required: false,
+        trim: true
+    }
 });
 
 module.exports = {
