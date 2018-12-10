@@ -17,7 +17,7 @@ var app = express();
 //----------------------Configuration-----------------------------------//
 app.set('view engine', 'hbs');
 
-hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerPartials(__dirname + './../views/partials/');
 
 app.use(express.static(__dirname + './../public'));
 app.use(bodyParser.json());
