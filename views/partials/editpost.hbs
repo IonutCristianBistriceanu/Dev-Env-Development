@@ -1,0 +1,12 @@
+<form action="/myposts/{{house._id}}" class="mt-5" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="location-update">Location</label>
+        <input type="text" name="location" class="form-control" id="location-update" placeholder="Enter house location"
+          value={{house.location}}  required>
+    </div>
+    <div class="form-group">
+        <label for="description-update">Description</label>
+        <textarea class="form-control" name="description" id="description-update" rows="3" required minlength="20">{{house.description}}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Update post</button>
+</form>

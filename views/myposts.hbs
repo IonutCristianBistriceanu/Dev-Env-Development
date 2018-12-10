@@ -1,17 +1,21 @@
 {{> header}}
 <div class="container">
-
-<div class="row houses-container">
-    {{#each posts}}
-    <div class="card" style="width: 16rem;">
-        <img class="card-img-top" src="uploads/{{imageName}}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Location: {{location}}</h5>
-            <p class="card-text">{{description}}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+    <div class="row houses-container">
+        {{#each posts}}
+        <div class="card" style="width: 16rem;">
+            <img class="card-img-top" src="uploads/{{imageName}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Location: {{location}}</h5>
+                <p class="card-text">{{description}}</p>
+                <div class="row">
+                    <a href="/myposts/{{_id}}" class="btn btn-primary edit-post ml-4">Edit post</a>
+                    <form action="/myposts/{{_id}}" method="GET">
+                        <button type="submit" class="btn btn-danger delete-post ml-2">Delete post</button>
+                    </form>
+                </div>
+            </div>
         </div>
+        {{/each}}
     </div>
-    {{/each}}
-</div>
 </div>
 {{> footer}}
