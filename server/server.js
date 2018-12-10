@@ -104,7 +104,7 @@ app.get('/add', authenticate, (req, res)=>{
  });
 
  //GET /edit/:id - Edit post
-app.get('/myposts/:id', authenticate, (req, res)=>{
+app.get('/edit/:id', authenticate, (req, res)=>{
     var id = req.params.id;
 
     House.findById(id).then((house)=>{
@@ -218,8 +218,7 @@ app.get('/myposts/:id', authenticate, (req,res)=>{
 });
 
 //POST '/updatepost' Update a single post 
-
-app.post('/myposts/:id', authenticate, (req, res)=> {
+app.post('/edit/:id', authenticate, (req, res)=> {
     var id= req.params.id;
     if(!ObjectID.isValid(id)) return res.status(404).send();
 

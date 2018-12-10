@@ -8,9 +8,9 @@
                 <h5 class="card-title">Location: {{location}}</h5>
                 <p class="card-text">{{description}}</p>
                 <div class="row">
-                    <a href="/myposts/{{_id}}" class="btn btn-primary edit-post ml-4">Edit post</a>
+                    <a href="/edit/{{_id}}" class="btn btn-primary edit-post ml-2">Edit post</a>
                     <form action="/myposts/{{_id}}" method="GET">
-                        <button type="submit" class="btn btn-danger delete-post ml-2">Delete post</button>
+                        <button type="submit" class="btn btn-danger delete-post ml-4">Delete post</button>
                     </form>
                 </div>
             </div>
