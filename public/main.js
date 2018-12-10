@@ -1,5 +1,6 @@
 //Page main script
-var url = 'http://localhost:3000'
+// var url = 'http://localhost:3000';
+var url = 'https://pure-reef-96969.herokuapp.com';
 
 //----------------------AJAX Api calls-----------------------------------//
 
