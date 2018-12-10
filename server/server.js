@@ -11,7 +11,6 @@ const {House} = require('./models/house');
 const {authenticate} = require('./middleware/authenticate');
 const cookieParser = require('cookie-parser')
 const upload = require('express-fileupload');
-const port = process.env.PORT || 3000;
 
 var app = express();
 
@@ -24,8 +23,8 @@ app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(upload());
 
-app.listen(port, ()=>{
-    console.log(`Started on port ${port}`);
+app.listen(process.env.PORT || 3000, ()=>{
+    console.log(`Started on port ${process.env.PORT || 3000}`);
 });
 //----------------------Configuration end-----------------------------------//
 
