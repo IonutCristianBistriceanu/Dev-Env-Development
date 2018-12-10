@@ -72,8 +72,9 @@ app.get('/register', (req, res) => {
 
 //GET /main - get all houses
 app.get('/main', authenticate, (req, res)=>{
+    var id = req.user._id;
 
-    House.find().then((houses)=>{
+    House.find({ _creator: { $ne: id } }).then((houses)=>{
         res.render('main.hbs', {
             pageTitle:'Main',
             showLogoutBtn:true,
@@ -89,6 +90,22 @@ app.get('/add', authenticate, (req, res)=>{
         showLogoutBtn:true,
         secondaryMenu:true
     })
+ });
+
+
+ app.get('/myposts', authenticate, (req, res)=>{
+    var id = req.user._id;
+
+     House.find({_creator:id}).then((posts)=>{
+        res.render('myposts.hbs', {
+            pageTitle:'My posts',
+            showLogoutBtn:true,
+            secondaryMenu:true,
+            posts
+        })
+     });
+
+    
  });
 
 //----------------------Routes end-----------------------------------//
@@ -127,7 +144,7 @@ app.post('/register', (req, res)=>{
     })
 });
 
-//GET Logout
+//DELETE Logout
 app.delete('/main/logout', authenticate, (req, res)=>{
     req.user.removeToken(req.token).then(()=>{
         res.cookie('xauth', "");
@@ -137,15 +154,12 @@ app.delete('/main/logout', authenticate, (req, res)=>{
     });
 });
 
-
-
-
-
-app.post('/add', (req, res)=>{
-
+//POST '/add/ - Add new post
+app.post('/add', authenticate, (req, res)=>{
     var imageName="";
     var imageLocation="";
-    
+    var id = req.user._id;
+
     if(req.files){
         var file = req.files.file;
         
@@ -162,7 +176,8 @@ app.post('/add', (req, res)=>{
         location:req.body.location,
         description:req.body.description,
         imageName,
-        imageLocation
+        imageLocation,
+        _creator:id
     });
 
     house.save().then((doc)=>{

@@ -26,6 +26,10 @@ var House = mongoose.model('House', {
         type: String,
         required: false,
         trim: true
+    },
+    _creator:{
+        type: mongoose.Schema.Types.ObjectId,
+        required:true
     }
 });
 

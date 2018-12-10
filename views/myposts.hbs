@@ -1,0 +1,17 @@
+{{> header}}
+<div class="container">
+
+<div class="row houses-container">
+    {{#each posts}}
+    <div class="card" style="width: 16rem;">
+        <img class="card-img-top" src="uploads/{{imageName}}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">Location: {{location}}</h5>
+            <p class="card-text">{{description}}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    {{/each}}
+</div>
+</div>
+{{> footer}}

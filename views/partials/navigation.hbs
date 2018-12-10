@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
    <div class="container">
-      <a class="navbar-brand" href="/"> Holiday House</a>
+      <a class="navbar-brand"> Holiday House</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
@@ -14,6 +14,9 @@
             </li>
              <li style="display: {{#if_eq secondaryMenu true}}block{{else}}none{{/if_eq}}" class="nav-item {{#if_eq pageTitle 'Add home'}}active{{else}}{{/if_eq}}">
                <a class="nav-link" href="/add">Add a home</span></a>
+            </li>
+            <li style="display: {{#if_eq secondaryMenu true}}block{{else}}none{{/if_eq}}" class="nav-item {{#if_eq pageTitle 'My posts'}}active{{else}}{{/if_eq}}">
+               <a class="nav-link" href="/myposts">My posts</span></a>
             </li>
 
             <li style="display: {{#if_eq secondaryMenu false}}block{{else}}none{{/if_eq}}" class="nav-item {{#if_eq pageTitle 'Login page'}}active{{else}}{{/if_eq}}">
