@@ -1,4 +1,6 @@
 //Page main script
+var url = 'http://localhost:3000'
+
 //----------------------AJAX Api calls-----------------------------------//
 
 
@@ -7,14 +9,14 @@ $('#register-user-form').submit((e) => {
     var data = ConvertFormToJSON($("#register-user-form"))
 
     $.ajax({
-        url: "http://localhost:3000/register",
+        url: url + "/register",
         type: "POST",
         contentType: 'application/json',
         data: JSON.stringify(data),
         success: function (data) {
             if (data) {
                 swal("You have succesfully registered!", "You will be redirected to the login page!", "success").then(() => {
-                    window.location.replace("http://localhost:3000/");
+                    window.location.replace(url);
                 });
             }
         },
@@ -33,22 +35,36 @@ $('#login-form').submit((e) => {
 
     e.preventDefault();
     var data = ConvertFormToJSON($("#login-form"));
-    var url = "http://localhost:3000";
+
     $.ajax({
         url: url,
         type: "POST",
         contentType: 'application/json',
         data: JSON.stringify(data),
-        success: function (data, textStatus, request) {
-            window.location.replace(url + '/me');
+        success: function () {
+            window.location.replace(url + '/main');
         },
         error: function (e) {
-            console.log(e);
+            if (e.status == 400) {
+                $.notify("Wrong username/password combination", "error");
+            }
         }
     });
 })
 
+$('#logout-btn').on('click', (e) => {
 
+    $.ajax({
+        url: url + '/main/logout',
+        type: "DELETE",
+        success: function () {
+            window.location.replace(url);
+        },
+        error: function (e) {
+            //Do something
+        }
+    });
+});
 
 
 

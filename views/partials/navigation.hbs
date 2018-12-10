@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+   <div class="container">
+      <a class="navbar-brand" href="/"> Holiday House</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+         <ul class="navbar-nav mr-auto">
+            
+             <li style="display: {{#if_eq secondaryMenu true}}block{{else}}none{{/if_eq}}" class="nav-item {{#if_eq pageTitle 'Main'}}active{{else}}{{/if_eq}}">
+               <a class="nav-link" href="/main">View homes</span></a>
+            </li>
+             <li style="display: {{#if_eq secondaryMenu true}}block{{else}}none{{/if_eq}}" class="nav-item {{#if_eq pageTitle 'Add home'}}active{{else}}{{/if_eq}}">
+               <a class="nav-link" href="/add">Add a home</span></a>
+            </li>
+
+            <li style="display: {{#if_eq secondaryMenu false}}block{{else}}none{{/if_eq}}" class="nav-item {{#if_eq pageTitle 'Login page'}}active{{else}}{{/if_eq}}">
+               <a class="nav-link" href="/">Login</span></a>
+            </li>
+            <li style="display: {{#if_eq secondaryMenu false}}block{{else}}none{{/if_eq}}" class="nav-item {{#if_eq pageTitle 'Register page'}}active{{else}}{{/if_eq}}">
+               <a class="nav-link" href="/register">Register</a>
+            </li>
+         </ul>
+         <button style="visibility: {{#if_eq showLogoutBtn true}}visible{{else}}hidden{{/if_eq}}" class="btn btn-outline-danger my-2 my-sm-0" id="logout-btn" type="button">Logout</button>
+      </div>
+   </div>
+</nav>
+

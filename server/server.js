@@ -57,21 +57,34 @@ hbs.registerHelper('if_eq', function(a, b, opts) {
 //----------------------Routes-----------------------------------//
 app.get('/', (req, res) => {
     res.render('login.hbs', {
-        pageTitle: 'Login page'
+        pageTitle: 'Login page',
+        secondaryMenu:false
     })
 });
 
 app.get('/register', (req, res) => {
     res.render('register.hbs', {
-        pageTitle: 'Register page'
+        pageTitle: 'Register page',
+        secondaryMenu:false
     });
 });
 
-app.get('/me', authenticate, (req, res)=>{
-   res.render('me.hbs', {
-       pageTitle:'me'
-   })
+app.get('/main', authenticate, (req, res)=>{
+
+    res.render('main.hbs', {
+        pageTitle:'Main',
+        showLogoutBtn:true,
+        secondaryMenu:true
+    })
 });
+
+app.get('/add', authenticate, (req, res)=>{
+    res.render('add.hbs', {
+        pageTitle:'Add home',
+        showLogoutBtn:true,
+        secondaryMenu:true
+    })
+ });
 
 //----------------------Routes end-----------------------------------//
 
@@ -108,6 +121,35 @@ app.post('/register', (req, res)=>{
         res.status(400).send(e);
     })
 });
+
+//GET Logout
+app.delete('/main/logout', authenticate, (req, res)=>{
+    req.user.removeToken(req.token).then(()=>{
+        res.cookie('xauth', "");
+        res.status(200).send();
+    }, ()=>{
+        res.status(400).send();
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //Get me
@@ -200,13 +242,7 @@ app.patch('/todos/:id', (req, res)=>{
 
 
 
-app.delete('/users/me/token', authenticate, (req, res)=>{
-    req.user.removeToken(req.token).then(()=>{
-        res.status(200).send();
-    }, ()=>{
-        res.status(400).send();
-    });
-});
+
 //----------------------API's end-----------------------------------//
 
 
