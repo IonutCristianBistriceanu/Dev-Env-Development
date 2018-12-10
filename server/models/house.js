@@ -1,25 +1,31 @@
 var mongoose = require('mongoose');
 
 var House = mongoose.model('House', {
-    Location: {
+    location: {
         type: String,
         required: true,
         minlength: 1,
         trim: true
     },
-    CreatedAt: {
+    description: {
+        type: String,
+        required:true,
+        minlength: 20,
+        trim: true
+    },
+    createdAt: {
         type: Number,
         default: new Date().getTime()
     },
-    Images: [{
+    images: [{
         ImageName: {
             type: String,
-            required: true,
+            required: false,
             trim: true
         },
-        ImageLocation: {
+        imageLocation: {
             type: String,
-            required: true,
+            required: false,
             trim: true
         }
     }]

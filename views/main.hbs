@@ -1,3 +1,17 @@
 {{> header}}
-<h1>Hi</h1>
+<div class="container">
+
+<div class="row houses-container">
+    {{#each houses}}
+    <div class="card" style="width: 16rem;">
+        <img class="card-img-top" src="https://www.visitkrk.com/img/7205-2018-6-23_luksuzna_kuca_za_odmor_nicole.jpg" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">Location: {{location}}</h5>
+            <p class="card-text">{{description}}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    {{/each}}
+</div>
+</div>
 {{> footer}}

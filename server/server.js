@@ -7,8 +7,10 @@ const {ObjectID} = require('mongodb');
 const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
+const {House} = require('./models/house');
 const {authenticate} = require('./middleware/authenticate');
 const cookieParser = require('cookie-parser')
+const upload = require('express-fileupload');
 
 var app = express();
 
@@ -21,6 +23,7 @@ app.use(express.static(__dirname + './../public'));
 
 app.use(bodyParser.json());
 app.use(cookieParser())
+app.use(upload());
 
 app.listen(3000, ()=>{
     console.log('Started on port 3000');
@@ -69,13 +72,17 @@ app.get('/register', (req, res) => {
     });
 });
 
+//GET /main - get all houses
 app.get('/main', authenticate, (req, res)=>{
 
-    res.render('main.hbs', {
-        pageTitle:'Main',
-        showLogoutBtn:true,
-        secondaryMenu:true
-    })
+    House.find().then((houses)=>{
+        res.render('main.hbs', {
+            pageTitle:'Main',
+            showLogoutBtn:true,
+            secondaryMenu:true,
+            houses
+        });
+    });
 });
 
 app.get('/add', authenticate, (req, res)=>{
@@ -136,7 +143,34 @@ app.delete('/main/logout', authenticate, (req, res)=>{
 
 
 
+app.post('/add', (req, res)=>{
 
+    if(req.files){
+        var file = req.files.file;
+        var filename = file.name;
+
+        file.mv(__dirname+'/uploads/' + filename, (err)=>{
+            if(err){
+                console.log(err);
+                res.redirect('/main');
+            }
+            console.log('done');
+            res.redirect('/main');
+        })
+    }
+
+    return;
+    var house = new House({
+        location:req.body.location,
+        description:req.body.description
+    });
+
+    house.save().then((doc)=>{
+        res.send(doc);
+    }, (e)=>{
+        res.status(400).send(e);
+    })
+})
 
 
 
