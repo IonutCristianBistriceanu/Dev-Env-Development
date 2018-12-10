@@ -15,10 +15,11 @@ const upload = require('express-fileupload');
 var app = express();
 
 //----------------------Configuration-----------------------------------//
-hbs.registerPartials(__dirname + './../views/partials');
 app.set('view engine', 'hbs');
-app.use(express.static(__dirname + './../public'));
 
+hbs.registerPartials(__dirname + '/views/partials');
+
+app.use(express.static(__dirname + './../public'));
 app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(upload());
