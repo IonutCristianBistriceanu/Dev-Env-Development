@@ -9,7 +9,8 @@
     "start":"node server/server.js"
   },
   "engines":{
-    "node":"8.11.4"
+    "node":"8.11.4",
+    "npm":"6.4.1"
   },
 
   "author": "",
