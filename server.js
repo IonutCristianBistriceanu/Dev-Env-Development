@@ -200,7 +200,7 @@ app.post('/add', authenticate, (req, res)=>{
             return res.status(400).redirect('main');
         }
 
-        imageName = file.name+ Date.now();
+        imageName = Date.now()+ file.name;
         imageLocation ='./public/uploads/';
 
         file.mv(imageLocation + imageName, (err)=>{
