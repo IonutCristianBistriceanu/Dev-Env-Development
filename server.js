@@ -5,7 +5,6 @@ const hbs = require('hbs');
 
 const {ObjectID} = require('mongodb');
 const {mongoose} = require('./server/db/mongoose');
-const {Todo} = require('./server/models/todo');
 const {User} = require('./server/models/user');
 const {House} = require('./server/models/house');
 const {authenticate} = require('./server/middleware/authenticate');
@@ -16,14 +15,11 @@ var app = express();
 
 //----------------------Configuration-----------------------------------//
 app.set('view engine', 'hbs');
-
 hbs.registerPartials(__dirname + '/views/partials/');
-
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(upload());
-
 app.listen(process.env.PORT || 3000, ()=>{
     console.log(`Started on port ${process.env.PORT || 3000}`);
 });
@@ -120,6 +116,26 @@ app.get('/edit/:id', authenticate, (req, res)=>{
     })
    
 });
+
+//GET /offer/:id
+
+app.get('/offer/:id', authenticate, (req, res)=>{
+    var id = req.params.id;
+
+    House.findById(id).then((house)=>{
+        User.findById(house._creator).then(user=>{
+            res.render('offer.hbs', {
+                pageTitle:'Offer',
+                showLogoutBtn:true,
+                secondaryMenu:true,
+                house,
+                email:user.email
+            })
+        })
+    }).catch((e)=>{
+        res.status(400).send();
+    })
+})
 //----------------------Routes end-----------------------------------//
 
 
@@ -174,8 +190,15 @@ app.post('/add', authenticate, (req, res)=>{
     
     if(req.files){
         var file = req.files.file;
+        console.log(req.files);
         
-        imageName = file.name;
+        const filetypes = /jpeg|jpg|gif|bmp|png/;
+
+        if(!filetypes.test(file.mimetype)){
+            return res.status(400).redirect('main');
+        }
+
+        imageName = file.name+ Date.now();
         imageLocation ='./public/uploads/';
 
         file.mv(imageLocation + imageName, (err)=>{
