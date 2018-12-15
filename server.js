@@ -19,7 +19,9 @@ hbs.registerPartials(__dirname + '/views/partials/');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(cookieParser())
-app.use(upload());
+app.use(upload({
+    limits: { fileSize: 1024 * 1024 },
+  }));
 app.listen(process.env.PORT || 3000, ()=>{
     console.log(`Started on port ${process.env.PORT || 3000}`);
 });
@@ -194,7 +196,7 @@ app.post('/add', authenticate, (req, res)=>{
         
         const filetypes = /jpeg|jpg|gif|bmp|png/;
 
-        if(!filetypes.test(file.mimetype)){
+        if(!filetypes.test(file.mimetype) || file.truncated){
             return res.status(400).redirect('main');
         }
 
